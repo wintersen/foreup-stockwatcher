@@ -1,0 +1,368 @@
+/* Base style, mobile-first */
+body {
+    font-family: 'Open Sans', sans-serif;
+    color: #3E5769;
+    background-color: #fafafa;
+    margin: 0;
+    width: 100vw;
+}
+
+#app {
+    width: 90%;
+    margin: auto;
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+/* Begin form styling */
+.searchForm {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.5rem;
+    width: 100%;
+    letter-spacing: 1.1px !important;
+}
+.searchForm input {
+    grid-column: span 3 / span 3;
+    padding: 1rem;
+    color: #726f8b;
+    border-color: #e6e6e6;
+    border-style: solid;
+    border-radius: .25rem;
+    font-size: 1.25rem;
+}
+.searchForm input::placeholder {
+    color: #726f8b;
+}
+.searchForm button {
+    grid-column: span 1 / span 1;
+    background-color: #284CC9;
+    color: white;
+    padding: 1%;
+    border: solid 1px #284CC9;
+    border-radius: .25rem;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 1.1px !important;
+    -webkit-box-shadow: 0px 26px 31px -23px rgba(21,35,111,0.79); 
+    box-shadow: 0px 26px 31px -23px rgba(21,35,111,0.79);
+}
+.searchForm button::after{
+    content: "ADD";
+}
+.errorMsg {
+    font-weight: 600;
+    color: #BB0606;
+}
+/* End form styling */
+
+/* Begin stock card styling */
+.stockGrid {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+}
+.stockCard {
+    display: flex;
+    flex-direction: row;
+    padding: 1rem;
+    background-color: white;
+    text-transform: uppercase;
+    -webkit-box-shadow: 0px 6px 33px 3px rgba(0,0,0,0.05); 
+    box-shadow: 0px 6px 33px 3px rgba(0,0,0,0.05);
+}
+.info {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.info div {
+    display: flex;
+    flex-direction: column;
+}
+
+.info div:first-child {
+    width: 65%;
+}
+
+.info .name {
+    font-size: 1.25rem;
+    font-weight: 800;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.info .symbol {
+    color: #919AA0;
+    font-weight: 600;
+}
+
+.valueStats {
+    display: flex;
+    flex-direction: row;
+    width: 35%;
+    text-align: right;
+}
+
+.valueStats div {
+    flex-direction: row !important;
+    text-align: right;
+}
+
+.valueStats span:first-child {
+    font-size: 1.50rem;
+    font-weight: 400;
+}
+
+/* These sections are hidden on small devices */
+.stockStats {
+    display: none !important;
+}
+
+.rating{
+    display: none !important;
+}
+
+/* These styles are for calculated stock growth values, are dynamically added with Vue */
+.positiveGrowth, .negativeGrowth {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 600;
+    padding-left: 5px;
+}
+
+.positiveGrowth > *, .negativeGrowth > * {
+    padding-left: 5px;
+}
+
+.positiveGrowth{
+    color: #299E00;
+}
+
+.positiveGrowth span:last-child {
+    color: #3ebf0f;
+}
+
+.negativeGrowth{
+    color: #BB0606;
+}
+
+.negativeGrowth span:last-child {
+    color: #d43131;
+}
+/* End stock card styling */
+
+/* Styling for tablets*/
+@media only screen and (min-width:768px) {
+    #app {
+        padding-top: 6rem;
+    }
+
+    h1 {
+        font-size: 4rem;
+        
+    }
+    
+    .searchForm {
+        width: 75%;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .searchForm input {
+        grid-column: span 2 / span 2;
+    }
+
+    .searchForm button {
+        grid-column: span 1 / span 1;
+    }
+
+    .searchForm button::after{
+        content: "ADD STOCK";
+    }
+
+    .stockGrid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 1rem;
+        margin-top: 3rem;
+    }
+
+    .stockCard {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        padding: 0;
+    }
+
+    .info{
+        grid-column: span 2 / span 2;
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+        width: auto;
+    }
+
+    .info div:first-child {
+        width: 100%;
+    }
+
+    .info .name {
+        width: 100%;
+    }
+
+    /* Rating is the colored section to the left of the card that shows a visual
+       representation of how the stock is performing */
+    .rating {
+        grid-column: span 1 / span 1;
+        display: flex !important;
+        padding: 1rem;
+        color: white;
+    }
+
+    .rating .values {
+        padding-left: .5rem;
+        font-weight: 600;
+        font-size: .9rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .rating .values div {
+        display: flex;
+    }
+
+    .positive {
+        background: linear-gradient(#6AF531, #00A333);
+    }
+
+    .positive .values {
+        border-left: solid 3px;
+        border-image-source: linear-gradient(rgba(255,255,255,1), rgba(255,255,255,.5));
+        border-image-slice: 1;
+    }
+
+    .negative {
+        background: linear-gradient(#EB5631, #901700);
+    }
+
+    .negative .values {
+        border-left: solid 3px;
+        border-image-source: linear-gradient(rgba(255,255,255,.5), rgba(255,255,255,1));
+        border-image-slice: 1;
+    }
+
+    /* Value stats show the basic numeric information for that stock, Open, High, and Low price */
+    .valueStats {
+        flex-direction: row !important;
+    }
+
+    .valueStats span:first-child {
+        font-size: 1.5rem;
+    }
+
+    .positiveGrowth, .negativeGrowth {
+        font-size: .80rem;
+        padding-top: .5rem;
+    }
+
+    .stockStats{
+        flex-direction: row !important;
+        flex-wrap: wrap;
+        display: inline !important;
+        font-size: 1rem;
+        font-weight: 600;
+    }
+    
+    .stockStats span:nth-child(odd){
+        color: #98A1A8;
+    }
+
+    .stockStats span:nth-child(even){
+        color: #607f96;
+        padding-right: 5px;
+    }
+}
+/* Styling for laptops 1024 and up */
+@media only screen and (min-width: 1024px) {
+    .stockCard {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        padding: 0;
+    }
+    .info {
+        grid-column: span 2 / span 2;
+    }
+    .rating {
+        grid-column: span 1 / span 1;
+    }
+
+    .valueStats span:first-child {
+        font-size: 2rem;
+    }
+
+    .positiveGrowth, .negativeGrowth {
+        font-size: 1rem;
+        padding-top: 1rem;
+    }
+}
+/* Extra large devices 1440 and up */
+@media only screen and (min-width: 1440px) {
+
+    .searchForm {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        width: 50%;
+    }
+
+    .searchForm input {
+        grid-column: span 2 / span 2;
+    }
+
+    .searchForm button {
+        grid-column: span 1 / span 1;
+    }
+    .stockGrid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .stockCard {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .rating {
+        grid-column: span 1 / span 1;
+        padding: 1.5rem;
+    }
+
+    .info {
+        grid-column: span 3 / span 3;
+        padding: 1.5rem;
+    }
+
+    .stockStats{
+        font-size: .75rem;
+    }
+
+}
+
+/* Questions for Designer:
+
+What is the radius on the button and inputs?
+
+What is the kerning for the search form?
+
+It seems that the provided colors in the spec sheet do not match the actual colors in the screenshot
+--see the light green color for percent change, does not appear to match provided light green color
+
+What screen size are we targeting for tablet, exactly?  Provided design seems wider than standard 768px
+Had to make a slightly customized breakpoint to allow for tablets and mid-size laptops to have fully-legible
+stock cards
+
+*/

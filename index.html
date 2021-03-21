@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <!-- Grab Vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+
+    <!-- Grab Open Sans from Googlefonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Grab FontAwesome icons -->
+    <script src="https://kit.fontawesome.com/f88d00b31e.js" crossorigin="anonymous"></script>
+
+    <link href="index.css" rel="stylesheet">
+
+    <title>Stock Watcher</title>
+</head>
+<body>
+    <div id="app">
+        <h1>Stock Watcher</h1>
+        <!-- Form to take user inputted stock symbol, is NOT casesensitive -->
+        <form @submit.prevent="checkSymbol" class="searchForm">
+            <input type="text" v-model="searchedStock" placeholder="Enter stock symbol"/>
+            <button type="submit"></button>
+        </form>
+        <!-- Error messages for invalid input -->
+        <span class="errorMsg" v-show="stockNotFound">Could not find stock.</span>
+        <span class="errorMsg" v-show="duplicate">Already tracking that stock.</span>
+        <!-- All currently tracked stocks live in this grid -->
+        <div class="stockGrid">
+            <template v-for="stock in watching">
+                <div class="stockCard">
+                    <!-- Visual representation of stock worth vs. marketplace values -->
+                    <div :class="[stock.current > stock.open ? 'positive' : 'negative', rating]">
+                        <div style="position: relative; min-width: 8px;">
+                            <i :style="topPercent(stock)" class="fas fa-caret-right fa-lg"></i>
+                        </div>
+                        <div class="values">
+                            <div>{{stock.high}}</div>
+                            <div>{{stock.low}}</div>
+                        </div>
+                    </div>
+                    <!-- Full information on stock in text -->
+                    <div class="info">
+                        <div>
+                            <span class="name">{{stock.name}}</span>
+                            <span class="symbol">{{stock.symbol}}</span>
+                        </div>
+                        <div class="valueStats">
+                            <span>{{stock.current}}</span>
+                            <div :class="[stock.current > stock.open ? 'positiveGrowth' : 'negativeGrowth']">
+                                <i v-if="stock.current > stock.open" class="fas fa-arrow-up fa-sm"></i>
+                                <i v-else class="fas fa-arrow-down fa-sm"></i>
+                                <span>{{(stock.current - stock.open).toFixed(2)}}</span>
+                                <span>({{((stock.current - stock.open)/stock.open*100).toFixed(2)}}%)</span>
+                            </div>
+                        </div>
+                        <div class="stockStats">
+                            <span>Open </span><span>{{stock.open}}</span>
+                            <span>High </span><span>{{stock.high}}</span>
+                            <span>Low </span><span>{{stock.low}}</span>
+                        </div>
+                    </div>
+
+                </div>
+            </template>
+        </div>
+    </div>
+
+    <script>
+        var app = new Vue({
+            el: '#app',
+            data: {
+                message: 'ok',
+                searchedStock: '',
+                stockNotFound: false,
+                rating: 'rating',
+                currentStocks: [
+                    {symbol: 'GOOG', name: 'Alphabet Inc. Cl C', open: 691, low: 689.47, high: 709.28, current: 706.32},
+                    {symbol: 'YHOO', name: 'Yahoo!Inc', open: 29.28, low: 29.06, high: 29.66, current: 29.27},
+                    {symbol: 'AIG', name: 'American International Group Inc', open: 52.06, low: 52.28, high: 53.47, current: 53.08},
+                    {symbol: 'UWTIF', name: 'VelocityShares 3x Long Crude ETN', open: 1.37, low: 1.50, high: 1.74, current: 1.61},
+                    {symbol: 'DWTIF', name: '3X Inverse Crude', open: 307.10, low: 245.59, high: 297.50, current: 253.41},
+                    {symbol: 'GRPN', name: 'Groupon Inc', open: 4.08, low: 3.60, high: 4.13, current: 3.74}
+                ],
+                watching: []
+            },
+            methods: {
+                //Method to verify that stock user searched for exists in database
+                checkSymbol() {
+                    this.duplicate = false;
+                    let s = this.currentStocks.find( stock => stock.symbol === this.searchedStock.toUpperCase());
+                    if(s){
+                        this.stockNotFound = false;
+                        //Make sure to not add duplicates if already watching
+                        if(!this.watching.includes(s)){
+                            this.watching.push(s);
+                        }
+                        else{
+                            this.duplicate = true;
+                        }
+                        this.searchedStock = '';
+                    }
+                    else{ //to do finish error
+                        this.stockNotFound = true;
+                    }
+                },
+                // Method to calculate position of carat on rating 
+                topPercent(stock) {
+                    let x = stock.high - stock.low;
+                    let y = stock.current - stock.low;
+                    let z = Math.abs((y/x*100).toFixed(0)-100)-5;
+
+                    return( 'position: absolute; top:'+ z +'%;');
+                }
+            }
+        })
+    </script>
+</body>
+</html>
